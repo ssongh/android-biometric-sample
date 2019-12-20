@@ -50,8 +50,6 @@ class BiometricPromptManager(
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) }
 
-    private val biometricManager: BiometricManager = BiometricManager.from(context)
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun encryptPrompt(
         data: ByteArray,

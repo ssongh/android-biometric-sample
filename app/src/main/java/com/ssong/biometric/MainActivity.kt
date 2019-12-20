@@ -1,9 +1,9 @@
 package com.ssong.biometric
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.ssong.biometric.utils.BiometricPromptManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -48,4 +48,5 @@ class MainActivity : AppCompatActivity() {
     private fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
+
 }

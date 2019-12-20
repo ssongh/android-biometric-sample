@@ -5,11 +5,11 @@
     <!-- 생체 인증 MSG -->
     <string name="BIOMETRIC_ERROR_DEFAULT">지문 인증에 실패하였습니다.</string>
     <string name="BIOMETRIC_ERROR_UNREGISTERED">지문 인증 등록 후 시도해주세요.</string>
-    <string name="BIOMETRIC_ERROR_CHANGED">기기의 지문 정보가 변경되었습니다. 지문 인증 재등록 후 시도해주세요.</string>
+    <string name="BIOMETRIC_ERROR_CHANGED">기기의 지문 정보가 변경(추가 또는 삭제)되었습니다. 지문을 다시 등록해주셔야 이용이 가능합니다.</string>
     <string name="BIOMETRIC_ERROR_HW_NOT_PRESENT">이 기기에는 지문 인식 센서가 없습니다.</string>
     <string name="BIOMETRIC_ERROR_HW_UNAVAILABLE">지문 인식 하드웨어를 사용할 수 없습니다. 나중에 다시 시도해주세요.</string>
     <string name="BIOMETRIC_ERROR_LOCKOUT">시도 횟수가 너무 많아 인증을 사용할 수 없습니다.</string>
     <string name="BIOMETRIC_ERROR_LOCKOUT_PERMANENT">시도 횟수가 너무 많아 인증을 사용할 수 없습니다.</string>
-    <string name="BIOMETRIC_ERROR_NO_BIOMETRICS">등록 된 지문이 없습니다.</string>
+    <string name="BIOMETRIC_ERROR_NO_BIOMETRICS">기기에 등록 된 지문이 없습니다.</string>
     <string name="BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL">기기에 핀, 패턴 또는 비밀번호가 설정되어 있지 않습니다.</string>
 </resources>
