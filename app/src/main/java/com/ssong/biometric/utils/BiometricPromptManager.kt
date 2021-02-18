@@ -1,17 +1,16 @@
 package com.ssong.biometric.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.preference.PreferenceManager
+
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.biometric.BiometricConstants
-import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
@@ -45,8 +44,7 @@ class BiometricPromptManager(
             listOf(ALGORITHM, BLOCK_MODE, PADDING).joinToString(separator = "/")
     }
 
-    private val sharedPreferences: SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences: SharedPreferences = (context as Activity).getPreferences(Context.MODE_PRIVATE)
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) }
 
@@ -69,7 +67,7 @@ class BiometricPromptManager(
                 invalidAlgorithmParameterException
             )
 
-            val msg = context.getString(R.string.BIOMETRIC_ERROR_NO_BIOMETRICS)
+            val msg = context.getString(R.string.BIOMETRIC_ERROR_NO_FINGERPRINT)
             failedAction(msg)
 
         } catch (e: Exception) {
@@ -144,14 +142,16 @@ class BiometricPromptManager(
     }
 
     private fun saveEncryptedData(dataEncrypted: ByteArray, initializationVector: ByteArray) {
-        sharedPreferences.edit {
+        with(sharedPreferences.edit()){
             putString(DATA_ENCRYPTED, Base64.encodeToString(dataEncrypted, Base64.DEFAULT))
             putString(
                 INITIALIZATION_VECTOR,
                 Base64.encodeToString(initializationVector, Base64.DEFAULT)
             )
+            commit()
         }
     }
+
 
     private fun getEncryptCipher(key: Key): Cipher =
         Cipher.getInstance(keyTransformation()).apply { init(Cipher.ENCRYPT_MODE, key) }
@@ -199,6 +199,8 @@ class BiometricPromptManager(
 
         val promptInfo = biometricPromptInfo()
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+//        biometricPrompt.authenticate(promptInfo)
+
     }
 
     private fun handleDecrypt(
@@ -232,6 +234,7 @@ class BiometricPromptManager(
 
         val promptInfo = biometricPromptInfo()
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+//        biometricPrompt.authenticate(promptInfo)
     }
 
     private fun biometricPromptInfo(): BiometricPrompt.PromptInfo {
@@ -244,27 +247,27 @@ class BiometricPromptManager(
     }
 
     private fun biometricErrorMsg(errorCode: Int) = when (errorCode) {
-        BiometricConstants.ERROR_HW_NOT_PRESENT -> {
+        BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
             context.getString(R.string.BIOMETRIC_ERROR_HW_NOT_PRESENT)
         }
 
-        BiometricConstants.ERROR_HW_UNAVAILABLE -> {
+        BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
             context.getString(R.string.BIOMETRIC_ERROR_HW_UNAVAILABLE)
         }
 
-        BiometricConstants.ERROR_LOCKOUT -> {
+        BiometricPrompt.ERROR_LOCKOUT -> {
             context.getString(R.string.BIOMETRIC_ERROR_LOCKOUT)
         }
 
-        BiometricConstants.ERROR_LOCKOUT_PERMANENT -> {
+        BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
             context.getString(R.string.BIOMETRIC_ERROR_LOCKOUT_PERMANENT)
         }
 
-        BiometricConstants.ERROR_NO_BIOMETRICS -> {
+        BiometricPrompt.ERROR_NO_BIOMETRICS -> {
             context.getString(R.string.BIOMETRIC_ERROR_NO_BIOMETRICS)
         }
 
-        BiometricConstants.ERROR_NO_DEVICE_CREDENTIAL -> {
+        BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL -> {
             context.getString(R.string.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL)
         }
 
